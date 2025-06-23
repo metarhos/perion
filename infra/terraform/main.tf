@@ -13,6 +13,8 @@ module "vpc" {
   }
 }
 
+#test commit
+
 module "argocd" {
   depends_on = [module.eks]  # Явная зависимость
   source = "./modules/argocd"
