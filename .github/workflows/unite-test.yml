@@ -2,33 +2,38 @@ name: Node.js Unit Tests
 
 on:
   pull_request:
-    branches: [ main ]
+    branches: [main]
     paths:
       - 'hello-world-node/**'
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4  # Updated to v4
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4  # Updated to v4
+        uses: actions/setup-node@v4
         with:
-          node-version: '20'  # Updated to current LTS
-          cache: 'npm'
+          node-version: '20'
+          # Remove cache config since we have no lock file
+          
       - name: Install dependencies
         working-directory: ./hello-world-node
-        run: npm install
-      - name: Upload coverage
-        if: success()
-        uses: actions/upload-artifact@v4  # Updated to v4
-        with:
-          name: coverage-report
-          path: hello-world-node/coverage
-          retention-days: 5  # Added cleanup policy
+        run: |
+          npm install
+          npm install mocha nyc chai --save-dev
+          
       - name: Run tests
         working-directory: ./hello-world-node
         run: npm test
+
+      - name: Upload coverage
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: hello-world-node/coverage
