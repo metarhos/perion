@@ -1,19 +1,13 @@
 {
-  "name": "hello-world-node",
-  "version": "1.0.1",  
-  "description": "Node.js on Docker",
-  "author": "Arik Porat",
-  "main": "server.js",
-  "scripts": {
-    "test": "nyc mocha tests --exit",
-    "report": "nyc report --reporter=lcov",
-    "sonar": "node sonar-project.js",
-    "ci-test": "npm install && npm test"  
-  },
-  "dependencies": {},
-  "devDependencies": {
-    "mocha": "^10.0.0",          
-    "nyc": "^15.1.0",            
-    "chai": "^4.3.7"             
-  }
+    "name": "hello-world-node",
+    "version": "1.0.0",
+    "description": "Node.js on Docker",
+    "author": "Arik Porat",
+    "main": "server.js",
+    "scripts": {
+        "test": "nyc mocha tests --exit",
+        "report": "nyc report --reporter=lcov",
+        "sonar": "node sonar-project.js"
+    },
+    "dependencies": {}
 }

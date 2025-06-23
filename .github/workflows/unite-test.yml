@@ -2,15 +2,13 @@ name: Node.js Unit Tests
 
 on:
   pull_request:
-    branches: [main]
+    branches: [ main ]
     paths:
       - 'hello-world-node/**'
-    types: [opened, synchronize, reopened]
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
     
     steps:
       - name: Checkout code
@@ -21,11 +19,9 @@ jobs:
         with:
           node-version: '20'  # Updated to current LTS
           cache: 'npm'
-
-      - name: Install and test
+      - name: Install dependencies
         working-directory: ./hello-world-node
-        run: npm run ci-test
-
+        run: npm install
       - name: Upload coverage
         if: success()
         uses: actions/upload-artifact@v4  # Updated to v4
@@ -33,3 +29,6 @@ jobs:
           name: coverage-report
           path: hello-world-node/coverage
           retention-days: 5  # Added cleanup policy
+      - name: Run tests
+        working-directory: ./hello-world-node
+        run: npm test
