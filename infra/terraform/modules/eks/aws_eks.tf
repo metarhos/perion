@@ -6,7 +6,7 @@ terraform {
   }
 }
 
-# add Access configuratipon for my user. Added manually now in EKS
+# add Access configuratipon for my user. Added manually now in EKS 
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
