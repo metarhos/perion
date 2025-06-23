@@ -9,7 +9,7 @@ service:
 resources:
   limits:
     cpu: 500m
-    memory: 256Mi
+    memory: 512Mi
   requests:
     cpu: 250m
     memory: 128Mi
@@ -18,3 +18,20 @@ autoscaling:
   minReplicas: 2
   maxReplicas: 5
   targetCPUUtilizationPercentage: 80
+
+cronScale:
+  enabled: true
+  preWarmReplicas: 6 
+
+affinity:
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+    - weight: 100
+      podAffinityTerm:
+        labelSelector:
+          matchExpressions:
+          - key: app
+            operator: In
+            values:
+            - {{ include "hello-world-node.name" . }}
+        topologyKey: "topology.kubernetes.io/zone"
