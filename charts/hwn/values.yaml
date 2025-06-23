@@ -2,16 +2,13 @@ nameOverride: ""
 fullnameOverride: ""
 
 replicaCount: 2
-
 image:
   repository: 760370564012.dkr.ecr.us-east-1.amazonaws.com/pavel-hello-world-node-images
-  tag: "" 
+  tag: "8e3aa46"
   pullPolicy: IfNotPresent
-
 service:
   type: ClusterIP
   port: 80
-
 resources:
   limits:
     cpu: 500m
@@ -19,7 +16,6 @@ resources:
   requests:
     cpu: 250m
     memory: 128Mi
-
 autoscaling:
   enabled: true
   minReplicas: 2
