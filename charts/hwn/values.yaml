@@ -3,7 +3,7 @@ fullnameOverride: ""
 replicaCount: 2
 image:
   repository: 760370564012.dkr.ecr.us-east-1.amazonaws.com/pavel-hello-world-node-images
-  tag: "aa08af4"
+  tag: "eed9e20"
   pullPolicy: IfNotPresent
 service:
   type: ClusterIP
