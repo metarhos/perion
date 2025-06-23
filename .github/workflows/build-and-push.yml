@@ -6,15 +6,12 @@ on:
     paths:
       - 'hello-world-node/**'
       - '.github/workflows/build-and-push.yml'
-  pull_request:
-    branches: [ main ]
-    paths:
-      - 'hello-world-node/**'
 
 env:
   AWS_REGION: us-east-1
-  ECR_REPOSITORY_NAME: pavel-hello-world-node-images  # Just the name, not full URL
+  ECR_REPOSITORY_NAME: pavel-hello-world-node-images
   CONTAINER_NAME: hello-world-node
+  AWS_ACCOUNT_ID: 760370564012  # Добавлен явный account ID
 
 jobs:
   build-and-push:
@@ -22,7 +19,7 @@ jobs:
     permissions:
       contents: read
       packages: write
-      id-token: write  # Required for OIDC auth
+      id-token: write
 
     steps:
       - name: Checkout
@@ -31,9 +28,8 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: ${{ secrets.AWS_IAM_ROLE_ARN }}  # Best practice: use secret
+          role-to-assume: ${{ secrets.AWS_IAM_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
-          role-session-name: GitHubActions-ECR-Push
 
       - name: Login to Amazon ECR
         id: login-ecr
@@ -47,14 +43,15 @@ jobs:
         working-directory: ./hello-world-node
         run: |
           IMAGE_TAG=$(echo $GITHUB_SHA | cut -c1-7)
-          docker tag ${{ env.CONTAINER_NAME }}:latest ${{ env.AWS_REGION }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY_NAME }}:$IMAGE_TAG
-          docker tag ${{ env.CONTAINER_NAME }}:latest ${{ env.AWS_REGION }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY_NAME }}:latest
+          docker tag ${{ env.CONTAINER_NAME }}:latest ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY_NAME }}:$IMAGE_TAG
+          docker tag ${{ env.CONTAINER_NAME }}:latest ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY_NAME }}:latest
+          echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
 
       - name: Push Docker image to ECR
         run: |
-          docker push ${{ env.AWS_REGION }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY_NAME }}:$IMAGE_TAG
-          docker push ${{ env.AWS_REGION }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY_NAME }}:latest
+          docker push ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY_NAME }}:${{ env.IMAGE_TAG }}
+          docker push ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY_NAME }}:latest
 
       - name: Output image URI
         run: |
-          echo "Image URI: ${{ env.AWS_REGION }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY_NAME }}:$IMAGE_TAG"
+          echo "Image URI: ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY_NAME }}:${{ env.IMAGE_TAG }}"
