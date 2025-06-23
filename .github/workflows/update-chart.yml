@@ -1,0 +1,51 @@
+name: Update Helm Chart
+
+on:
+  workflow_run:
+    workflows: ["Build and Push Node.js to ECR"]
+    types:
+      - completed
+
+jobs:
+  update-chart:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Required to push changes
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Needed for git history
+
+      - name: Install yq
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-pip
+          sudo pip install yq
+
+      - name: Get image tag from previous workflow
+        id: get-tag
+        run: |
+          echo "IMAGE_TAG=$(echo ${{ github.event.workflow_run.head_sha }} | cut -c1-7)" >> $GITHUB_OUTPUT
+
+      - name: Update Helm chart values
+        working-directory: ./charts/hwn
+        run: |
+          # Update image tag in values.yaml
+          yq eval ".image.tag = \"${{ steps.get-tag.outputs.IMAGE_TAG }}\"" -i values.yaml
+          
+          # Configure git
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          
+          # Commit and push changes
+          git add values.yaml
+          git commit -m "CI: Update image tag to ${{ steps.get-tag.outputs.IMAGE_TAG }} [skip ci]"
+          git push
+
+      - name: Show changes
+        run: |
+          echo "Updated values.yaml:"
+          cat ./charts/hwn/values.yaml
