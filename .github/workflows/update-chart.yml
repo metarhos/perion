@@ -11,19 +11,18 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     permissions:
-      contents: write  # Required to push changes
+      contents: write
     
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # Needed for git history
+          fetch-depth: 0
 
-      - name: Install yq
+      - name: Install proper yq (Go version)
         run: |
-          sudo apt-get update
-          sudo apt-get install -y python3-pip
-          sudo pip install yq
+          sudo wget https://github.com/mikefarah/yq/releases/download/v4.34.1/yq_linux_amd64 -O /usr/bin/yq
+          sudo chmod +x /usr/bin/yq
 
       - name: Get image tag from previous workflow
         id: get-tag
@@ -33,14 +32,11 @@ jobs:
       - name: Update Helm chart values
         working-directory: ./charts/hwn
         run: |
-          # Update image tag in values.yaml
-          yq eval ".image.tag = \"${{ steps.get-tag.outputs.IMAGE_TAG }}\"" -i values.yaml
+          # Update using proper yq syntax
+          yq eval -i '.image.tag = "${{ steps.get-tag.outputs.IMAGE_TAG }}"' values.yaml
           
-          # Configure git
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          
-          # Commit and push changes
           git add values.yaml
           git commit -m "CI: Update image tag to ${{ steps.get-tag.outputs.IMAGE_TAG }} [skip ci]"
           git push
