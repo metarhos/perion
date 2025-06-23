@@ -13,17 +13,27 @@ module "vpc" {
   }
 }
 
-#test commit
+module "aws_iam" {
+  depends_on = [module.ecr]  
+  source = "./modules/aws_iam"
 
-module "argocd" {
-  depends_on = [module.eks]  # Явная зависимость
-  source = "./modules/argocd"
+  region = var.region
+  ecr_repository_name = module.ecr.repository_name
 
   providers = {
-    helm        = helm.real
-    kubernetes  = kubernetes.real
+    aws = aws.real
   }
 }
+
+# module "argocd" {
+#   depends_on = [module.eks] 
+#   source = "./modules/argocd"
+
+#   providers = {
+#     helm        = helm.real
+#     kubernetes  = kubernetes.real
+#   }
+# }
 
 module "eks" {
   source = "./modules/eks"

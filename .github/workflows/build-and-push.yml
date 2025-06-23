@@ -10,10 +10,10 @@ on:
     branches: [ main ]
     paths:
       - 'hello-world-node/**'
-# for PR different CI with tests
+
 env:
-  AWS_REGION: us-east-1  # e.g., us-east-1
-  ECR_REPOSITORY: 760370564012.dkr.ecr.us-east-1.amazonaws.com/pavel-hello-world-node-images
+  AWS_REGION: us-east-1
+  ECR_REPOSITORY_NAME: pavel-hello-world-node-images  # Just the name, not full URL
   CONTAINER_NAME: hello-world-node
 
 jobs:
@@ -22,7 +22,7 @@ jobs:
     permissions:
       contents: read
       packages: write
-      id-token: write
+      id-token: write  # Required for OIDC auth
 
     steps:
       - name: Checkout
@@ -31,8 +31,9 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: arn:aws:iam::your-account-id:role/your-github-actions-role
+          role-to-assume: ${{ secrets.AWS_IAM_ROLE_ARN }}  # Best practice: use secret
           aws-region: ${{ env.AWS_REGION }}
+          role-session-name: GitHubActions-ECR-Push
 
       - name: Login to Amazon ECR
         id: login-ecr
@@ -46,14 +47,14 @@ jobs:
         working-directory: ./hello-world-node
         run: |
           IMAGE_TAG=$(echo $GITHUB_SHA | cut -c1-7)
-          docker tag ${{ env.CONTAINER_NAME }}:latest ${{ env.AWS_REGION }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}:$IMAGE_TAG
-          docker tag ${{ env.CONTAINER_NAME }}:latest ${{ env.AWS_REGION }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}:latest
+          docker tag ${{ env.CONTAINER_NAME }}:latest ${{ env.AWS_REGION }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY_NAME }}:$IMAGE_TAG
+          docker tag ${{ env.CONTAINER_NAME }}:latest ${{ env.AWS_REGION }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY_NAME }}:latest
 
       - name: Push Docker image to ECR
         run: |
-          docker push ${{ env.AWS_REGION }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}:$IMAGE_TAG
-          docker push ${{ env.AWS_REGION }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}:latest
+          docker push ${{ env.AWS_REGION }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY_NAME }}:$IMAGE_TAG
+          docker push ${{ env.AWS_REGION }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY_NAME }}:latest
 
       - name: Output image URI
         run: |
-          echo "Image URI: ${{ env.AWS_REGION }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}:$IMAGE_TAG"
+          echo "Image URI: ${{ env.AWS_REGION }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY_NAME }}:$IMAGE_TAG"
