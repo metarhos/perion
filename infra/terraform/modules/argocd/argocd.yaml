@@ -1,0 +1,30 @@
+global:
+  namespace: argocd
+
+server:
+  name: server
+  serviceAccount:
+    create: true
+    name: argocd-server
+    namespace: argocd  # Explicit namespace
+  rbac:
+    create: true
+    namespace: argocd  # Explicit namespace
+
+controller: 
+  serviceAccount:
+    create: true
+    name: argocd-application-controller
+    namespace: argocd  # Explicit namespace
+
+repoServer:
+  serviceAccount:
+    create: true
+    name: argocd-repo-server
+    namespace: argocd  # Explicit namespace
+
+# Force all components to use the correct namespace
+applicationSet:
+  namespace: argocd
+notifications:
+  namespace: argocd

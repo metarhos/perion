@@ -1,0 +1,24 @@
+replicaCount: 2
+
+image:
+  repository: <your-ecr-or-dockerhub-repo>/hello-world-node
+  tag: "latest" # is it take latest, or tag must be named as LATEST?
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 256Mi
+  requests:
+    cpu: 250m
+    memory: 128Mi
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 80
