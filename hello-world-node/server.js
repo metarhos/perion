@@ -1,7 +1,6 @@
 const http = require('http');
 const hostname = '0.0.0.0';
 const port = 3000;
-// test commit
 
 const server = http.createServer((req, res) => {
   res.statusCode = 200;
