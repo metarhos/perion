@@ -1,0 +1,28 @@
+name: Node.js Unit Tests
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'hello-world-node/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16' # Match your app's version
+
+      - name: Install dependencies
+        working-directory: ./hello-world-node
+        run: npm install
+
+      - name: Run tests
+        working-directory: ./hello-world-node
+        run: npm test
