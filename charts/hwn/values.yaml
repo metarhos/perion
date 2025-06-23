@@ -1,8 +1,8 @@
 replicaCount: 2
 
 image:
-  repository: <your-ecr-or-dockerhub-repo>/hello-world-node
-  tag: "latest" # is it take latest, or tag must be named as LATEST?
+  repository: 760370564012.dkr.ecr.us-east-1.amazonaws.com/pavel-hello-world-node-images
+  tag: "" # is it take latest, or tag must be named as LATEST?
   pullPolicy: IfNotPresent
 
 service:
