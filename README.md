@@ -50,9 +50,9 @@ This project contains IaC based on Terraform and Kubernetes resources to deploy 
 1. Provision Infrastructure with Terraform
    Creates VPC, subnets, EKS cluster, IAM roles, and more.
 
-cd ./infra/terraform
-terraform init
-terraform apply
+cd ./infra/terraform /
+terraform init /
+terraform apply 
 
 2. ArgoCD is still in progress. Helm chart is working and ready. Use manual installation.
    
