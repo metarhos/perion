@@ -1,4 +1,5 @@
-# modules/argocd/main.tf
+# Work in progress. Module disabled
+
 terraform {
   required_providers {
     helm = {
@@ -42,7 +43,7 @@ resource "helm_release" "argocd" {
   depends_on = [kubernetes_namespace.argocd]
 }
 
-# # Для доступа к ArgoCD UI
+# 
 # resource "kubernetes_ingress_v1" "argocd" {
 #   metadata {
 #     name      = "argocd-ingress"
