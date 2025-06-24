@@ -59,6 +59,7 @@ terraform apply
 2. ArgoCD is still in progress. Helm chart is working and ready. Use manual installation.
    
 cd ./charts/hwn
+
 helm install hwn ./charts/hwn -n hwn --wait --timeout 5m 
 
 3. Build & Push Docker Image
@@ -66,9 +67,6 @@ Triggered automatically by a GitHub Action on push to main brainch of ./hello-wo
 
 Docker image is built and pushed to Amazon ECR
 
-
-
-✅ Note: ArgoCD is still in progress. Helm chart is working and ready.
 
 📝 Notes
 Most values are templated and configurable
