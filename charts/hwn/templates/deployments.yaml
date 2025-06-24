@@ -4,14 +4,16 @@ metadata:
   name: {{ include "hello-world-node.fullname" . }}
   labels:
     {{- include "hello-world-node.labels" . | nindent 4 }}
-  # if you often change cm/secrets and want to restart pods to apply changes. Better not to use
+
+  # if you often change cm/secrets and want to restart pods to apply changes. Better not to use in prod. 
   # annotations:
   #   rollme: {{ randAlphaNum 5 | quote }}
+
 spec:
   replicas: {{ .Values.replicaCount }}
   strategy:
     rollingUpdate: # controls rollouts
-      maxSurge: 1 # min +1 pod
+      maxSurge: 25% # only for deploy 
       maxUnavailable: 0 # no terminate while new not ok
     type: RollingUpdate
   selector:

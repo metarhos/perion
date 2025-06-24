@@ -15,7 +15,7 @@ spec:
       stabilizationWindowSeconds: 60 # scale if load persistance
       policies:
         - type: Pods
-          value: 1 # +1 pod
+          value: {{ .Values.cronScale.preWarmReplicas }} # up to 6
           periodSeconds: 15 # check every 15 sec
     scaleDown:
       stabilizationWindowSeconds: 300
