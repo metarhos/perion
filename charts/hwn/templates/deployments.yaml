@@ -4,14 +4,15 @@ metadata:
   name: {{ include "hello-world-node.fullname" . }}
   labels:
     {{- include "hello-world-node.labels" . | nindent 4 }}
-  annotations:
-    rollme: {{ randAlphaNum 5 | quote }}
+  # if you often change cm/secrets and want to restart pods to apply changes. Better not to use
+  # annotations:
+  #   rollme: {{ randAlphaNum 5 | quote }}
 spec:
   replicas: {{ .Values.replicaCount }}
   strategy:
-    rollingUpdate:
-      maxSurge: 25%
-      maxUnavailable: 0
+    rollingUpdate: # controls rollouts
+      maxSurge: 1 # min +1 pod
+      maxUnavailable: 0 # no terminate while new not ok
     type: RollingUpdate
   selector:
     matchLabels:
@@ -24,23 +25,27 @@ spec:
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 100
+          - weight: 100 # max "preferred" (not mandatory)
             podAffinityTerm:
               labelSelector:
                 matchExpressions:
-                - key: app
+                - key: app.kubernetes.io/name  
                   operator: In
                   values:
-                  - {{ include "hello-world-node.fullname" . }}
+                  - {{ include "hello-world-node.name" . }}  
+                - key: app.kubernetes.io/instance  
+                  operator: In
+                  values:
+                  - {{ .Release.Name }}  
               topologyKey: "topology.kubernetes.io/zone"
       containers:
         - name: hello-world-node
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}" # TODO: secrets
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - containerPort: 3000
+            - containerPort: {{ .Values.service.containerPort }}
               name: http
-          readinessProbe:
+          readinessProbe: # stable ping
             httpGet:
               path: /health
               port: http
@@ -48,16 +53,23 @@ spec:
             periodSeconds: 5
             successThreshold: 1
             failureThreshold: 3
-          startupProbe:
+          startupProbe: # first ping
             httpGet:
               path: /health
               port: http
             initialDelaySeconds: 10
             periodSeconds: 10
             failureThreshold: 30
+          livenessProbe: # monitoring
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            failureThreshold: 3          
           lifecycle:
             preStop:
               exec:
-                command: ["sh", "-c", "sleep 10"]
+                command: ["sh", "-c", "sleep 10"] # wait before stop, but pay attention on SPOT, each second may be important
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

@@ -1,3 +1,4 @@
+# protects against other disruptions ... drain, eviction... 
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
@@ -6,4 +7,4 @@ spec:
   minAvailable: 1
   selector:
     matchLabels:
-      app: {{ include "hello-world-node.fullname" . }}
+      {{- include "hello-world-node.selectorLabels" . | nindent 6 }}
