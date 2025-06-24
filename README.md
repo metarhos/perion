@@ -27,7 +27,7 @@ This project contains IaC based on Terraform and Kubernetes resources to deploy 
 
 - ❌ ArgoCD is not fully installed due to Terraform Helm/Kubernetes provider issues
 - ❌ Logging stack (Loki) not deployed yet
-- ❌ Need to cleanUP few TODO
+- ❌ Need to complete a few TODOs marked in the code
 
 ## 📁 Project Structure
 
