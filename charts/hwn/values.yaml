@@ -4,12 +4,13 @@ fullnameOverride: ""
 replicaCount: 2
 msName: "webapp"
 image:
-  repository: 760370564012.dkr.ecr.us-east-1.amazonaws.com/pavel-hello-world-node-images
+  repository: 760370564012.dkr.ecr.us-east-1.amazonaws.com/pavel-hello-world-node-images # TODO: secrets
   tag: "ed595ea"
   pullPolicy: IfNotPresent
 service:
-  type: ClusterIP
+  type: ClusterIP # to external usage need Ingress+ELB
   port: 80
+  containerPort: 3000
 resources:
   limits:
     cpu: 500m
@@ -25,15 +26,3 @@ autoscaling:
 cronScale:
   enabled: true
   preWarmReplicas: 6
-affinity:
-  podAntiAffinity:
-    preferredDuringSchedulingIgnoredDuringExecution:
-      - weight: 100
-        podAffinityTerm:
-          labelSelector:
-            matchExpressions:
-              - key: app
-                operator: In
-                values:
-                  - hello-world-node
-          topologyKey: "topology.kubernetes.io/zone"
