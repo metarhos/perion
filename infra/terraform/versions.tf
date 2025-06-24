@@ -4,15 +4,14 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 5.0" # but less than 6
+      version = "~> 5.0" 
     }
-    # allows Terraform to manage Kubernetes resources directly inside a Kubernetes cluster.
     kubernetes = { 
       source  = "hashicorp/kubernetes"
-      version = "~> 2.0"
+      version = "~> 2.0" # https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs
     }
     helm = {
-      source  = "hashicorp/helm"
+      source  = "hashicorp/helm" # https://registry.terraform.io/providers/hashicorp/helm/latest
       version = "~> 3.0.0"
     }
   }

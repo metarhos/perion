@@ -1,3 +1,5 @@
+# TODO: add/remove validation for variables where it need in all project
+
 variable "region" {
   description = "AWS region"
   type        = string
@@ -65,21 +67,15 @@ variable "public_subnets" {
   }
 }
 
-
+# Use mock for terrafom plan before real EKS
 variable "use_mock" {
   description = "Use mock providers or real AWS"
   type        = bool
   default     = false
 }
-
-variable "aws_provider_alias" {
-  description = "Which AWS provider alias to use"
+ 
+variable "repo_name" {
+  description = "ECR repo name"
   type        = string
-  default     = "mock"
-}
-
-variable "kubernetes_provider_alias" {
-  description = "Which K8s provider alias to use"
-  type        = string
-  default     = "mock"
+  default     = "pavel-hello-world-node-images"
 }

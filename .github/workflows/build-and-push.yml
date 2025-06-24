@@ -1,5 +1,7 @@
 name: Build and Push Node.js to ECR
 
+# tagPrefixList = ["v"]  # set in CI all images with prefix v. Can't use "any" prefix
+
 on:
   push:
     branches: [ main ]

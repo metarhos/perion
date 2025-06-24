@@ -1,5 +1,3 @@
 cluster_name = "pavel-devops"
 region       = "us-east-1"
 environment  = "dev"
-aws_provider_alias        = "mock"
-kubernetes_provider_alias = "mock"

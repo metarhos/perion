@@ -16,11 +16,11 @@ variable "environment" {
 variable "cidr_block" {
   type        = string
   description = "VPC CIDR (must be /16 or larger)"
-  default = "10.0.0.0/16" # 65,536 total IPs
+  default = "10.0.0.0/16" # 65,536
   
   validation {
     condition     = can(cidrnetmask(var.cidr_block)) && tonumber(split("/", var.cidr_block)[1]) <= 16
-    error_message = "Must be a valid IPv4 CIDR with mask ≤16 (e.g., 10.0.0.0/16)."
+    error_message = "Must be a valid IPv4 CIDR with mask <=16 (e.g., 10.0.0.0/16)."
   }
 }
 
