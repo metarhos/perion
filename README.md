@@ -68,14 +68,13 @@ Triggered automatically by a GitHub Action on push to main brainch of ./hello-wo
 Docker image is built and pushed to Amazon ECR
 
 
+
 📝 Notes
 
 - Most values are templated and configurable
 - Labels follow Kubernetes recommended conventions
-- 
-
-Code written using Terraform best practices (separation of modules, outputs, etc.)
+- Code written using Terraform best practices (separation of modules, outputs, etc.)
 
 Once ArgoCD is configured, it will:
-  Watch the Helm chart in the repo (charts/hello-world-node)
-  Automatically sync updates to the cluster
+- Watch the Helm chart in the repo (charts/hello-world-node)
+- Automatically sync updates to the cluster
