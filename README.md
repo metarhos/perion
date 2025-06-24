@@ -31,12 +31,12 @@ This project contains IaC based on Terraform and Kubernetes resources to deploy 
 
 ## 📁 Project Structure
 
-.
+
 ├── infra/ # Terraform: VPC, EKS, ECR, IAM, etc.
 
 │ └── modules/ # Terraform modules (vpc, eks, iam, ecr, etc.)
 
-├── charts/ # Helm chart for the Node.js app
+├── charts/hwn # Helm chart for the Node.js app
 
 ├── .github/workflows/ # CI/CD pipelines
 
