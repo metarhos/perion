@@ -4,7 +4,7 @@ kind: CronJob
 metadata:
   name: {{ include "hello-world-node.fullname" . }}-scale-up
 spec:
-  schedule: "0 7 * * *" # 10:00 ISR = 07:00 UTC
+  schedule: "50 6 * * *" # 09:50 ISR = 06:50 UTC
   jobTemplate:
     spec:
       template:
@@ -16,6 +16,10 @@ spec:
             - /bin/sh
             - -c
             - |
-              kubectl scale deployment {{ include "hello-world-node.fullname" . }} --replicas={{ .Values.cronScale.preWarmReplicas}}
+              kubectl scale deployment {{ include "hello-world-node.fullname" . }} --replicas={{ .Values.cronScale.preWarmReplicas}}   
+              sleep 2100 # 30 min block HPA
           restartPolicy: OnFailure
 {{- end }}
+
+# TODO: forgot SA
+# error: no objects passed to scale deployments.apps "hwn-test-hello-world-node-webapp" is forbidden: User "system:serviceaccount:hwn-test:default" cannot get resource " ││ deployments" in API group "apps" in the namespace "hwn-test"      

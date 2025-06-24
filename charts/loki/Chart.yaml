@@ -1,6 +1,6 @@
 apiVersion: v2
 name: Loki
-description: A Helm chart for deploying Node.js hello-world app
+description: Here will be chart for ArgoCD if need additional templates or change many values. Or remove it and use directly in Application
 type: application
 version: 0.1.0
 appVersion: "1.0.0"
