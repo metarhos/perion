@@ -1,4 +1,5 @@
 # you can use --- syntax to apply hpa for all deployments
+# TODO: something with metrics server, check
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
