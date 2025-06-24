@@ -1,7 +1,17 @@
+terraform {
+  required_providers {
+    aws = {
+      source = "hashicorp/aws"
+    }
+  }
+}
+
+# This file must be refactored carefully. I added below few changes, after apply them need to change 
+
 resource "aws_iam_role" "github_actions_ecr_perion" {
-  name               = "GitHubActions-ECR-perion"
+  name               = "GitHubActions-ECR-perion" # TODO: rewrite to github-actions-<resource> change GitHub OIDC
   assume_role_policy = data.aws_iam_policy_document.github_actions_assume_role.json
-  description        = "Role for GitHub Actions to push to ECR (metarhos/perion)"
+  description        = "Role for GitHub Actions to push to ECR"
 }
 
 data "aws_iam_policy_document" "github_actions_assume_role" {
@@ -38,26 +48,14 @@ data "aws_iam_policy_document" "ecr_push_perion" {
   statement {
     effect = "Allow"
     actions = [
-      "ecr:GetAuthorizationToken",
       "ecr:BatchCheckLayerAvailability",
-      "ecr:GetDownloadUrlForLayer",
-      "ecr:InitiateLayerUpload",
-      "ecr:UploadLayerPart",
       "ecr:CompleteLayerUpload",
-      "ecr:PutImage"
-    ]
-    resources = ["*"] # These are account-level permissions
-  }
-
-  statement {
-    effect = "Allow"
-    actions = [
-      "ecr:CreateRepository",
+      "ecr:InitiateLayerUpload",
+      "ecr:PutImage",
+      "ecr:UploadLayerPart",
       "ecr:DescribeRepositories"
     ]
-    resources = [
-      "arn:aws:ecr:${var.region}:${data.aws_caller_identity.current.account_id}:repository/${var.ecr_repository_name}"
-    ]
+    resources = ["arn:aws:ecr:us-east-1:760370564012:repository/pavel-hello-world-node-images"]
   }
 }
 

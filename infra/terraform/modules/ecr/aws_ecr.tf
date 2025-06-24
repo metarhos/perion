@@ -11,7 +11,7 @@ resource "aws_ecr_repository" "this" {
   # image_tag_mutability = "MUTABLE"
 
   image_scanning_configuration {
-    scan_on_push = false # can use the scan results in CI/CD or monitoring to decide whether to release the image for use or not.
+    scan_on_push = false # can run security in CI before push
   }
 
   tags = {

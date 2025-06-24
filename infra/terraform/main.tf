@@ -13,6 +13,29 @@ module "vpc" {
   }
 }
 
+module "eks" {
+  source = "./modules/eks"
+  
+  cluster_name = var.cluster_name
+  subnet_ids   = module.vpc.private_subnets
+  vpc_id       = module.vpc.vpc_id
+  environment  = var.environment
+
+  providers = {
+    aws        = aws.real
+  }
+}
+
+module "ecr" { # guys, clean your ECR) here's a lot of old repos. Save money! :)
+  source      = "./modules/ecr"
+  environment = var.environment
+  repository_name = var.repo_name 
+
+  providers = {
+    aws = aws.real
+  }
+}
+
 module "aws_iam" {
   depends_on = [module.ecr]  
   source = "./modules/aws_iam"
@@ -34,26 +57,3 @@ module "aws_iam" {
 #     kubernetes  = kubernetes.real
 #   }
 # }
-
-module "eks" {
-  source = "./modules/eks"
-  
-  cluster_name = var.cluster_name
-  subnet_ids   = module.vpc.private_subnets
-  vpc_id       = module.vpc.vpc_id
-  environment  = var.environment
-
-  providers = {
-    aws        = aws.real
-  }
-}
-
-module "ecr" { # guys, clean your ECR) here's a lot of old repos. Save money! :)
-  source      = "./modules/ecr"
-  environment = var.environment
-  repository_name = "pavel-hello-world-node-images"
-
-  providers = {
-    aws = aws.real
-  }
-}

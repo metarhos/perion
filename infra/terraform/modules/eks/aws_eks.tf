@@ -6,14 +6,12 @@ terraform {
   }
 }
 
-# add Access configuratipon for my user. Added manually now in EKS 
-
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~> 20.0"
 
   cluster_name    = var.cluster_name
-  cluster_version = "1.28"
+  cluster_version = "1.28" # TODO: variable
   vpc_id          = var.vpc_id
   subnet_ids      = var.subnet_ids
   cluster_endpoint_public_access = true
@@ -45,16 +43,19 @@ module "eks" {
   }
   
 
-  tags = {
+  tags = { # TODO: think about tags and labels for project
     Environment = var.environment
   }
 }
+
+
+# TODO: add Access configuratipon for my user. Added manually now in EKS 
 
 resource "aws_security_group_rule" "eks_api_access" {
   type              = "ingress"
   from_port         = 443
   to_port           = 443
   protocol          = "tcp"
-  cidr_blocks       = ["0.0.0.0/0"]  # Или ваш IP
+  cidr_blocks       = ["0.0.0.0/0"]  
   security_group_id = module.eks.cluster_security_group_id
 }

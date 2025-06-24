@@ -1,4 +1,3 @@
-# Default AWS provider (real)
 provider "aws" {
   alias       = "real"
   region = var.region
@@ -6,7 +5,6 @@ provider "aws" {
   # or ec-2 with IAM, or OIDC for pipelines
 }
 
-# Beautifull AWS provider mock
 provider "aws" {
   alias  = "mock"
   region = var.region
@@ -31,7 +29,6 @@ provider "kubernetes" {
   host                   = module.eks.cluster_endpoint  
   cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data) # CA cert for TLS verification
   
-  # Authentication using AWS CLI
   exec { 
     api_version = "client.authentication.k8s.io/v1beta1"  
     command     = "aws"  
@@ -39,10 +36,10 @@ provider "kubernetes" {
   }
 }
 
-# provider "kubernetes" {
-#   alias       = "mock"
-#   config_path = "kubeconfig-mock.yaml"
-# }
+provider "kubernetes" {
+  alias       = "mock"
+  config_path = "kubeconfig-mock.yaml"
+}
 
 provider "helm" {
   alias = "real"
