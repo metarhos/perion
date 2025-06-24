@@ -16,8 +16,16 @@ spec:
             - /bin/sh
             - -c
             - |
+              kubectl annotate hpa {{ include "hello-world-node.fullname" . }} \
+                autoscaling.alpha.kubernetes.io/current-replicas={{ .Values.cronScale.preWarmReplicas}} \
+                --overwrite -n {{ .Values.namespace }}
+
               kubectl scale deployment {{ include "hello-world-node.fullname" . }} --replicas={{ .Values.cronScale.preWarmReplicas}}   
+              
               sleep 2100 # 30 min block HPA
+              
+              kubectl annotate hpa {{ include "hello-world-node.fullname" . }} \
+                autoscaling.alpha.kubernetes.io/current-replicas- -n {{ .Values.namespace }}
           restartPolicy: OnFailure
 {{- end }}
 
