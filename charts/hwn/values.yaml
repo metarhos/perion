@@ -5,7 +5,7 @@ replicaCount: 2
 msName: "webapp"
 image:
   repository: 760370564012.dkr.ecr.us-east-1.amazonaws.com/pavel-hello-world-node-images # TODO: secrets
-  tag: "ed595ea"
+  tag: "45930d9"
   pullPolicy: IfNotPresent
 service:
   type: ClusterIP # to external usage need Ingress+ELB
