@@ -29,5 +29,6 @@ spec:
           restartPolicy: OnFailure
 {{- end }}
 
+# TODO: check annotation approach for HPA freezing
 # TODO: forgot SA
 # error: no objects passed to scale deployments.apps "hwn-test-hello-world-node-webapp" is forbidden: User "system:serviceaccount:hwn-test:default" cannot get resource " ││ deployments" in API group "apps" in the namespace "hwn-test"      
