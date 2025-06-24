@@ -13,7 +13,7 @@ env:
   AWS_REGION: us-east-1
   ECR_REPOSITORY_NAME: pavel-hello-world-node-images
   CONTAINER_NAME: hello-world-node
-  AWS_ACCOUNT_ID: 760370564012  # Добавлен явный account ID
+  AWS_ACCOUNT_ID: 760370564012  # TODO: secrets
 
 jobs:
   build-and-push:

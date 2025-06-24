@@ -19,7 +19,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          # Remove cache config since we have no lock file
           
       - name: Install dependencies
         working-directory: ./hello-world-node
