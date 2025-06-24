@@ -69,8 +69,11 @@ Docker image is built and pushed to Amazon ECR
 
 
 📝 Notes
-Most values are templated and configurable
-Labels follow Kubernetes recommended conventions
+
+- Most values are templated and configurable
+- Labels follow Kubernetes recommended conventions
+- 
+
 Code written using Terraform best practices (separation of modules, outputs, etc.)
 
 Once ArgoCD is configured, it will:
