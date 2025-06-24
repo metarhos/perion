@@ -31,7 +31,7 @@ data "aws_iam_policy_document" "github_actions_assume_role" {
     condition {
       test     = "StringLike"
       variable = "token.actions.githubusercontent.com:sub"
-      values   = ["repo:metarhos/perion:*"]
+      values   = ["repo:metarhos/perion:*"] # TODO: variable
     }
   }
 }
