@@ -13,7 +13,7 @@ helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
-app.kubernetes.io/component: {{ .Values.msName | default "no-name" }}
+app.kubernetes.io/component: {{ .Release.Name | default "no-name" }} 
 {{- end -}}
 
 {{- define "hello-world-node.selectorLabels" -}}

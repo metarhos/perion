@@ -47,6 +47,7 @@ jobs:
           IMAGE_TAG=$(echo $GITHUB_SHA | cut -c1-7)
           docker tag ${{ env.CONTAINER_NAME }}:latest ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY_NAME }}:$IMAGE_TAG
           docker tag ${{ env.CONTAINER_NAME }}:latest ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY_NAME }}:latest
+          # but I'm not sure that using latest is good... not readable, double push
           echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
 
       - name: Push Docker image to ECR
