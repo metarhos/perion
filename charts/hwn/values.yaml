@@ -6,7 +6,7 @@ msName: "webapp"
 namespace: "hwn-test"
 image:
   repository: 760370564012.dkr.ecr.us-east-1.amazonaws.com/pavel-hello-world-node-images # TODO: secrets
-  tag: "08c6246"
+  tag: "6028474"
   pullPolicy: IfNotPresent
 service:
   type: ClusterIP # to external usage need Ingress+ELB (or only ALB or NodePort)
