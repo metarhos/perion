@@ -30,7 +30,7 @@ jobs:
         working-directory: ./hello-world-node
         run: npm test
 
-      - name: Upload coverage
+      - name: Upload coverage # TODO: No files were found with the provided path: hello-world-node/coverage. No artifacts will be uploaded.
         if: success()
         uses: actions/upload-artifact@v4
         with:

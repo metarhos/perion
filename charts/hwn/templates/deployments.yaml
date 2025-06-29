@@ -5,7 +5,7 @@ metadata:
   labels:
     {{- include "hello-world-node.labels" . | nindent 4 }}
 
-  # if you often change cm/secrets and want to restart pods to apply changes. Better not to use in prod. 
+  # if you often change cm/secrets and want to restart pods to apply changes. Better not to use in prod. Not related to img tag
   # annotations:
   #   rollme: {{ randAlphaNum 5 | quote }}
 
